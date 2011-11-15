@@ -66,6 +66,7 @@ class HtmlEditorField extends TextareaField {
 				'HtmlEditorField->saveInto(): This field should save into a HTMLText or HTMLVarchar field.'
 			);
 		}
+		$errormessage = "";
 		
 		$linkedPages = array();
 		$linkedFiles = array();
@@ -75,28 +76,35 @@ class HtmlEditorField extends TextareaField {
 		// Populate link tracking for internal links & links to asset files.
 		if($links = $htmlValue->getElementsByTagName('a')) foreach($links as $link) {
 			$href = Director::makeRelative($link->getAttribute('href'));
-			
+
 			if($href) {
 				if(preg_match('/\[sitetree_link id=([0-9]+)\]/i', $href, $matches)) {
 					$ID = $matches[1];
-					
+
 					// clear out any broken link classes
 					if($class = $link->getAttribute('class')) {
 						$link->setAttribute('class', preg_replace('/(^ss-broken|ss-broken$| ss-broken )/', null, $class));
 					}
 					
 					$linkedPages[] = $ID;
-					if(!DataObject::get_by_id('SiteTree', $ID))  $record->HasBrokenLink = true;
+					if(!DataObject::get_by_id('SiteTree', $ID)) {
+						$record->HasBrokenLink = true;
+						$errormessage.="\nbroken link to ".$href.' (extracted from '.$link.')';
+					}
 
 				} else if(substr($href, 0, strlen(ASSETS_DIR) + 1) == ASSETS_DIR.'/') {
+					Subsite::disable_subsite_filter(true);
 					$candidateFile = File::find(Convert::raw2sql(urldecode($href)));
+					Subsite::disable_subsite_filter(false);
 					if($candidateFile) {
 						$linkedFiles[] = $candidateFile->ID;
 					} else {
 						$record->HasBrokenFile = true;
+						$errormessage.="\nbroken assets link to ".urldecode($href).' (extracted from '.$link.')';
 					}
 				} else if($href == '' || $href[0] == '/') {
 					$record->HasBrokenLink = true;
+						$errormessage.="\nbroken unknown link to ".$href.' (extracted from '.$link.')';
 				}
 			}
 		}
@@ -108,8 +116,8 @@ class HtmlEditorField extends TextareaField {
 			if(!$image = File::find($path = urldecode(Director::makeRelative($img->getAttribute('src'))))) {
 				if(substr($path, 0, strlen(ASSETS_DIR) + 1) == ASSETS_DIR . '/') {
 					$record->HasBrokenFile = true;
+						$errormessage.="\nbroken file-link (img) to ".$path.' (extracted from '.$img.')';
 				}
-				
 				continue;
 			}
 			
@@ -159,6 +167,7 @@ class HtmlEditorField extends TextareaField {
 			}
 		}
 		
+		//SS_Log::log(new Exception($record->URLSegment." ".$record->ID.$errormessage), SS_Log::NOTICE);
 		$record->{$this->name} = $htmlValue->getContent();
 	}
 
