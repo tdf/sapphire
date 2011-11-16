@@ -443,7 +443,7 @@ class SSViewer {
 				} else { 
 					$thisURLRelativeToBase = strip_tags($_SERVER['REQUEST_URI']); 
 				}
-				$output = preg_replace('/(<a[^>]+href *= *)"#/i', '\\1"/' . $thisURLRelativeToBase . '#', $output);
+				$output = preg_replace('/(<a[^>]+href *= *)"#/i', '\\1"' . $thisURLRelativeToBase . '#', $output);
 			}
 		}
 
