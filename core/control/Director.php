@@ -90,6 +90,17 @@ class Director {
 	 * @uses Controller::run() Controller::run() handles the page logic for a Director::direct() call.
 	 */
 	static function direct($url) {
+		if (strpos($url, '/irc://') !== false || strpos($url, '/callto://') !== false) {
+			//return 400 - bad request error, stupid crawlers/broken browsers
+			if ($response = ErrorPage::response_for(400)) {
+				$response->output();
+			} else {
+				$response=new SS_HTTPResponse("irc:// and callto:// are not meant to be opened in the browser, sorry", 400, "Bad request");
+				$response->output();
+			}
+			return;
+		}
+
 		// Validate $_FILES array before merging it with $_POST
 		foreach($_FILES as $k => $v) {
 			if(is_array($v['tmp_name'])) {
