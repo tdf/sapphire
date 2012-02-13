@@ -72,7 +72,7 @@ class TabSet extends CompositeField {
 		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/prototype/prototype.js");
 		Requirements::javascript(SAPPHIRE_DIR . "/thirdparty/behaviour/behaviour.js");
 		Requirements::javascript(SAPPHIRE_DIR . "/javascript/prototype_improvements.js");
-		Requirements::javascript(THIRDPARTY_DIR . "/jquery/jquery.js");
+		Requirements::javascript(THIRDPARTY_DIR . "/jquery/jquery-packed.js");
 		Requirements::javascript(SAPPHIRE_DIR . "/javascript/jquery_improvements.js");
 		Requirements::javascript(THIRDPARTY_DIR . "/tabstrip/tabstrip.js");
 		Requirements::css(THIRDPARTY_DIR . "/tabstrip/tabstrip.css");

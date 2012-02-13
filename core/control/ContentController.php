@@ -339,7 +339,7 @@ class ContentController extends Controller {
 				Requirements::css(SAPPHIRE_DIR . '/css/SilverStripeNavigator.css');
 				// TODO Using jQuery for this is absolute overkill, and might cause conflicts
 				// with other libraries.
-				Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/jquery/jquery.js');
+				Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/jquery/jquery-packed.js');
 				Requirements::javascript(SAPPHIRE_DIR . '/javascript/SilverStripeNavigator.js');
 				
 				$return = $nav = SilverStripeNavigator::get_for_record($this->dataRecord);

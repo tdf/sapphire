@@ -1879,7 +1879,7 @@ class Member_DatetimeOptionsetField extends OptionsetField {
 
 	function Field() {
 		Requirements::css(SAPPHIRE_DIR . '/css/MemberDatetimeOptionsetField.css');
-		Requirements::javascript(THIRDPARTY_DIR . '/thirdparty/jquery/jquery.js');
+		Requirements::javascript(THIRDPARTY_DIR . '/thirdparty/jquery/jquery-packed.js');
 		Requirements::javascript(SAPPHIRE_DIR . '/javascript/MemberDatetimeOptionsetField.js');
 
 		$options = '';

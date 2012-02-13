@@ -358,7 +358,7 @@ class Security extends Controller {
 			// with the tabstrip library otherwise
 			$link_base = Director::absoluteURL($this->Link("login"));
 			
-			Requirements::javascript(THIRDPARTY_DIR . "/jquery/jquery.js");
+			Requirements::javascript(THIRDPARTY_DIR . "/jquery/jquery-packed.js");
 			Requirements::javascript(SAPPHIRE_DIR . "/javascript/jquery_improvements.js");
 			Requirements::javascript(THIRDPARTY_DIR . "/tabstrip/tabstrip.js");
 			Requirements::css(THIRDPARTY_DIR . "/tabstrip/tabstrip.css");

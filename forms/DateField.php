@@ -545,7 +545,7 @@ class DateField_View_JQuery {
 	 */
 	function onAfterRender($html) {
 		if($this->getField()->getConfig('showcalendar')) {
-			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+			Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery-packed.js');
 			Requirements::javascript(SAPPHIRE_DIR . '/javascript/jquery_improvements.js');	
 			Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery.ui.all.css');
 			Requirements::javascript(SAPPHIRE_DIR . '/thirdparty/jquery-ui/jquery.ui.core.js');

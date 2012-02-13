@@ -50,7 +50,7 @@ class FileIFrameField extends FileField {
 	 */
 	public function Field() {
 		Requirements::add_i18n_javascript(SAPPHIRE_DIR . '/javascript/lang');
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery-packed.js');
 		Requirements::css(Director::protocol().'ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css');
 		Requirements::javascript(Director::protocol().'ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js');
 		
@@ -105,7 +105,7 @@ class FileIFrameField extends FileField {
 		Requirements::clear();
 		Requirements::add_i18n_javascript('sapphire/javascript/lang');
 		Requirements::javascript(THIRDPARTY_DIR . '/prototype/prototype.js');
-		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery.js');
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery/jquery-packed.js');
 		Requirements::javascript('sapphire/javascript/FileIFrameField.js');
 		
 		Requirements::css('cms/css/typography.css');
