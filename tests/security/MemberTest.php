@@ -114,6 +114,23 @@ class MemberTest extends FunctionalTest {
 		
 		Security::set_password_encryption_algorithm($origAlgo);
 	}
+
+	public function testKeepsEncryptionOnEmptyPasswords() {
+		$member = new Member();
+		$member->Password = 'mypassword';
+		$member->PasswordEncryption = 'sha1_v2.4';
+		$member->write();
+		
+		$member->Password = '';
+		$member->write();
+		
+		$this->assertEquals(
+			$member->PasswordEncryption, 
+			'sha1_v2.4'
+		);
+		$result = $member->checkPassword('');
+		$this->assertTrue($result->valid());
+	}
 	
 	function testSetPassword() {
 		$member = $this->objFromFixture('Member', 'test');
@@ -555,6 +572,35 @@ class MemberTest extends FunctionalTest {
 			$adminMember->onChangeGroups(array($newAdminGroup->ID)),
 			'Adding new admin group relation is allowed for admin members'
 		);
+	}
+
+	public function testGenerateAutologinTokenAndStoreHash() {
+		$enc = new PasswordEncryptor_PHPHash('sha1');
+
+		$m = new Member();
+		$m->PasswordEncryption = 'sha1';
+		$m->Salt = $enc->salt('123');
+
+		$token = $m->generateAutologinTokenAndStoreHash();
+
+		$this->assertEquals($m->encryptWithUserSettings($token), $m->AutoLoginHash, 'Stores the token as ahash.');
+	}
+
+	public function testValidateAutoLoginToken() {
+		$enc = new PasswordEncryptor_PHPHash('sha1');
+
+		$m1 = new Member();
+		$m1->PasswordEncryption = 'sha1';
+		$m1->Salt = $enc->salt('123');
+		$m1Token = $m1->generateAutologinTokenAndStoreHash();
+
+		$m2 = new Member();
+		$m2->PasswordEncryption = 'sha1';
+		$m2->Salt = $enc->salt('456');
+		$m2Token = $m2->generateAutologinTokenAndStoreHash();
+		
+		$this->assertTrue($m1->validateAutoLoginToken($m1Token), 'Passes token validity test against matching member.');
+		$this->assertFalse($m2->validateAutoLoginToken($m1Token), 'Fails token validity test against other member.');
 	}
 
 	/**
